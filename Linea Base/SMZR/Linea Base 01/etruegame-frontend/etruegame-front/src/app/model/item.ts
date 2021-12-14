@@ -1,4 +1,4 @@
-class item{
+export class Item{
     id: number
     nombre: string
     descripcion: string
