@@ -1,0 +1,90 @@
+<div mat-dialog-content class="login-modal " >
+  <div class="row">
+    <div class="col-10">
+      <h2 class="text-card h6" >{{titulo}}</h2>
+    </div>
+    <div class="col-2">
+      <a (click)="cerrarModal()" type="button" class="close" >
+        <span style="color: #fff;" aria-hidden="true">&times;</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <button class="btn btn-danger btn-block mb-3" (click)="signInWithGoogle()" type="button">
+      <i class="fab fa-google"></i> Continuar con google
+     </button>
+
+     <button class="btn btn-primary btn-block " (click)="signInWithFB()" type="button">
+       <i class="fab fa-facebook"></i> Continuar con facebook
+      </button>
+  </div>
+
+
+   <div class="mt-4">
+      <input class="input mb-3"  type="text" [(ngModel)]="usuario.email"  placeholder="email" name="email">
+      <input class="input "  type="password"   [(ngModel)]="usuario.password"  name="password" placeholder="Password">
+
+     <div class="form-group mt-4" style="text-align: end;">
+       <button class="btn btn-success btn-block" style="border-color: #d9d9d9;" type="button" (click)="login()">Iniciar sesión</button>
+     </div>
+    </div>
+</div>
+
+
+
+
+<!--
+  <div class="abrir-modal animacion fadeIn" *ngIf="authService.modal" >
+  <div  class="modal" tabindex="-1" style="display:block;">
+    <div class="modal-dialog modal-dialog-centered modal-sm" >
+      <div class="modal-content" style="box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.2);">
+
+          <div class="modal-header">
+            <h5 class="text-card" >{{titulo}}</h5>
+            <button (click)="cerrarModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <button class="btn btn-danger btn-block btn-social" (click)="signInWithGoogle()" type="button">
+             <i class="fab fa-google"></i> Continuar con google
+            </button>
+
+            <button class="btn btn-primary btn-block btn-social" (click)="signInWithFB()" type="button">
+              <i class="fab fa-facebook"></i> Continuar con facebook
+             </button>
+
+            <form class="mt-4"  method="post">
+              <div class="col-sm ">
+                <mat-form-field class="example-full-width" appearance="legacy">
+                  <mat-label>Ingrese su Correo</mat-label>
+                  <input [(ngModel)]="usuario.email" matInput placeholder="email" name="email" id="Username" autofocus>
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                </mat-form-field>
+
+              </div>
+
+              <div class="col-sm ">
+                <mat-form-field class="example-full-width" appearance="legacy">
+                  <mat-label>Ingrese su cotraseña</mat-label>
+                  <input [(ngModel)]="usuario.password" matInput [type]="hide ? 'password' : 'text'" name="password" id="Password">
+                  <button type="menu"  style="border: none; background: none;" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group" style="text-align: end;">
+                <button class="btn btn-link" type="submit" (click)="login()">Iniciar sesión</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+-->
