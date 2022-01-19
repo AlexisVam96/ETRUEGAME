@@ -1,0 +1,66 @@
+
+
+  <div mat-dialog-content class="map-modal map-xy-modal" style="overflow: hidden auto;">
+    <div class="row">
+      <div class="col-10 ">
+        <h1 mat-dialog-title>Agregar nueva dirección</h1>
+      </div>
+      <div class="col-2">
+        <a  class="close" style="cursor: pointer;" (click)="cerrarModal()">&times;</a>
+      </div>
+    </div>
+    <div class="card" style="height: 300px; border: none; outline: 0;">
+      <agm-map class="card-img" style="position: absolute;"  [latitude]="lat" [longitude]="lng" [zoom]="15">
+        <agm-marker   [latitude]="lat" [longitude]="lng" ></agm-marker>
+      </agm-map>
+      <div class="card-img-overlay" style="position: relative; font-size: medium; display: block;">
+        <input  class="input"  placeholder="Ingrese su dirección" #placesRef ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)"/>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-success btn-block  mb-2"  (click)="guardarUbicacion()" [disabled]="!ubicacion">Guardar Dirección</button>
+
+      </div>
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-light btn-block mb-2" (click)="cerrarModal()"> Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+<!--
+
+<div class="modal" tabindex="-1" style="display: block;">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Agregar nueva dirección</h5>
+        <button type="button"  (click)="cerrarModal()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="height: 370px;">
+        <div class="card  bg-dark text-white mt-4" style="border: none;">
+          <agm-map class="card-img" style=" position: absolute;" [latitude]="lat" [longitude]="lng" [zoom]="15">
+            <agm-marker [latitude]="lat" [longitude]="lng" ></agm-marker>
+          </agm-map>
+          <div class="card-img-overlay" >
+            <input class="form-control"  placeholder="Ingrese su dirección" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)"/>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()"> Cancelar</button>
+        <button type="button" class="btn btn-success"  (click)="guardarUbicacion()" [disabled]="!ubicacion">Guardar Dirección</button>
+      </div>
+    </div>
+  </div>
+</div>
+--->
