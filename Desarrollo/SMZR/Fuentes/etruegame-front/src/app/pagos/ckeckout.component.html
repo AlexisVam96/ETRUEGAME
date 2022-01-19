@@ -1,0 +1,276 @@
+<div class="checkout-header">
+  <div class="container">
+    <div class="checkout-header-container">
+      <div></div>
+      <div class="checkout-description label--3 label-lg" >Su compra en youstore es 100% segura</div>
+    </div>
+  </div>
+</div>
+
+<div id="checkout" style="min-height: 100vh;">
+  <div class="d-block d-lg-none " style=" top:0px; position: sticky; width: 100%; z-index: 5;">
+    <mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Resumen de compra
+        </mat-panel-title>
+      </mat-expansion-panel-header >
+      <div class="container section-product">
+        <div class="row py-2" style="border-bottom: 1px solid #dee2e6!important; padding-bottom: 14px;"  *ngFor="let item of carritoService.items">
+          <div class="col-10">
+            <div class="row" >
+              <div class="col-3 p-0 d-flex justify-content-center">
+                <div class="d-flex justify-content-center align-items-center" style="height: 60px; width: 60px;">
+                  <img class="img-fluid" *ngIf="item.producto?.imagen" src="{{urlBackend}}/api/uploads/img/{{item.producto.imagen}}" >
+                  <img class="img-fluid" *ngIf="!item.producto?.imagen" src="{{urlBackend}}/api/images/not-image-cuadrado.png">
+                </div>
+              </div>
+              <div class="col-9">
+                <p class="mb-1">{{item.producto.nombre}}</p>
+                <span class="text-muted" style="font-size: x-small; font-weight: 500;">{{item.producto.descripcion}}</span>
+                <p class="text-left text-muted" style="font-weight: 500;">CANTIDAD: {{item.cantidad}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 text-right">
+          <span class="label " style="color: #737373;">{{item.cantidad*item.producto.precio | currency : 'S/'}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row mt-3" style="font-size: 1rem; border-bottom: 1px solid #dee2e6!important; padding-bottom: 14px;" >
+          <div class="col-6">
+            Subtotal
+          </div>
+          <div class="col-6 text-right">
+            {{this.subtotal | currency : 'S/'}}
+          </div>
+        </div>
+        <div class="row mt-3" style="font-size: 1rem; font-weight: 500;  padding-bottom: 14px;">
+          <div class="col-6">
+            Total a pagar
+          </div>
+          <div class="col-6 text-right">
+            {{this.subtotal | currency : 'S/'}}
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  </div>
+
+  <section class="container">
+    <div class=" row mt-3">
+      <div class="col">
+        <div class="d-flex align-items-center breadcrumbs-container">
+          <a class="bread-crumb label-crumb text-decoration-none" routerLink="/productos">Regresar a la tienda</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="container p-0" >
+    <main class="col ">
+      <form class="g-3 " #facturaForm="ngForm">
+      <!--<form class="g-3 " #facturaForm="ngForm" > [formGroup]="stripeTest"-->
+        <div class="row mt-3">
+          <div class="col-lg-8 col-md-12">
+            <div class="card mb-3"  *ngIf="!authService.isAuthenticated()" >
+              <div class="card-header">
+                <h5>Completas los datos para finalizar la compra</h5>
+              </div>
+
+                <div class="row card-body" >
+                  <div class="col-md-6 mt-2" >
+                    <label for="dni" class="form-label">Nombres</label>
+                    <input type="text" class="input" name="nombre" [(ngModel)]="compra.nombre" required #nombre="ngModel">
+                    <div class="text-danger label-danger" *ngIf="nombre.invalid && nombre.touched">
+                      Ingresa tu nombre
+                    </div>
+                  </div>
+                  <div class="col-md-6 mt-2" >
+                    <label for="movil" class="form-label">Apellidos</label>
+                    <input type="text" class="input" name="apellido" [(ngModel)]="compra.apellido" required #apellido="ngModel">
+                    <div class="text-danger label-danger" *ngIf="apellido.invalid && apellido.touched">
+                      Ingresa tu apellido
+                    </div>
+                  </div>
+                  <div class="col-md-6 mt-2" >
+                    <label for="correo" class="form-label">Correo</label>
+                    <input type="email" class="input" name="email" [(ngModel)]="compra.email" required #email="ngModel">
+                    <div class="text-danger label-danger" *ngIf="email.invalid && email.touched ">
+                      Ingresa tu email
+                    </div>
+                  </div>
+                  <div class="col-md-3 mt-2">
+                    <label for="dni" class="form-label">DNI</label>
+                    <input maxlength="8" type="text" class="input" name="dni" [(ngModel)]="compra.dni" required #dni="ngModel">
+                    <div class="text-danger label-danger" *ngIf="dni.invalid && dni.touched ">
+                      Ingresa tu documento
+                    </div>
+                  </div>
+                  <div class="col-md-3 mt-2">
+                    <label for="movil" class="form-label">Celular</label>
+                    <input maxlength="9" type="text" class="input" name="movil" [(ngModel)]="compra.movil" required #movil="ngModel">
+                    <div class="text-danger label-danger" *ngIf="movil.invalid && movil.touched ">
+                      Ingresa tu celular
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+            </div>
+
+
+            <div class="card" *ngIf="!carritoService.existeDireccion()">
+              <div class="card-header">
+                <h5>Coloque su ubicación</h5>
+              </div>
+              <div class="card-body">
+                <div class="border-map">
+                  <div class="content-map">
+                  <a  class="open-map" (click)="abrirModalMaps()"><span class="fas fa-plus"></span> Ingresar ubicación</a>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" *ngIf="carritoService.existeDireccion()">
+              <div class="card-header">
+                <h5>Coloque su ubicación</h5>
+              </div>
+              <div class="card-body">
+                <div class="border-map">
+                  <div class="content-map">
+                  <a class="open-map" (click)="abrirModalMaps()"><i class="fas fa-home"></i>
+                    {{compra.direccion}}</a>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mt-3">
+              <div class="card-header">
+                <h5>¿Como quieres pagar?</h5>
+              </div>
+              <div class="card-body">
+                <div class="border-pay">
+                  <div class="d-flex" style="justify-content: left; align-items: center;">
+                    <input type="radio" name="check" (click)="openCheck()">
+                    <span class="mx-2" >Pagar en efectivo contraentrega</span>
+                  </div>
+                  <div class="mx-3" *ngIf="check">
+                    <div style="font-size: small;">Ingrese un monto mayor a su pedido</div>
+                    <input name="monto" [(ngModel)]="compra.monto"  type="text" class="input" style="width: 200px;" >
+                  </div>
+              </div>
+              <div class="border-pay mt-3">
+                <div class="d-flex" style="justify-content: left; align-items: center;">
+                  <input type="radio" name="check" (click)="openCheckPaypal()" >
+                  <span class="mx-2" >Pagar con tarjeta</span>
+                </div>
+                <div class=" mx-3" *ngIf="checkPaypal" [formGroup]="stripeTest">
+
+                    <input class="input" type="text" formControlName="name"  placeholder="Nombre del propietario de la tarjeta..">
+                    <ngx-stripe-card
+                      [options]="cardOptions"
+                      [elementsOptions]="elementsOptions"
+                    ></ngx-stripe-card>
+
+                </div>
+            </div>
+              </div>
+            </div>
+            <div class="card mt-3 mb-5">
+              <div class="card-header">
+                <h5>Comprueba tus datos antes de finalizar su compra</h5>
+              </div>
+              <div class="card-body">
+                <div>Datos: {{compra.nombre}}</div>
+                <div>Correo: {{compra.email}}</div>
+                <div>DNI: {{compra.dni}}</div>
+                <div>Celular: {{compra.movil}}</div>
+                <div>Ubicación: {{compra.direccion}}</div>
+
+                <div class="dropdown-divider"></div>
+                <div class="row">
+                  <div class="col-md-5 offset-md-7">
+                    <button class="btn btn-block btn-success "  [disabled]="facturaForm.form.invalid || !(carritoService.items.length>0)" (click)="createToken()">Finalizar Compra</button>
+                  </div>
+              </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-4 col-md-12 mb-5 d-none d-lg-block" >
+            <div class="sticky-top" style="z-index: 1; top:50px" >
+
+                <div *ngIf="carritoService.items.length == 0" class=" card card-body d-flex align-items-center">
+                  <img src="../../favicon.ico" alt="" width="80px" height="80px">
+                  <span class="mb-3" style="font-weight: 500;">Tú carrito está vacío</span>
+                  <div class="mb-5 text-muted" style="text-align: center;">Agrega productos y da el primer paso para iniciar tu compra</div>
+
+                  <button class="btn btn-success  m-auto px-5" style="border-radius: 20px;" routerLink="/productos" type="submit">Ir a la página principal</button>
+                </div>
+                <div class="card mb-5" *ngIf="carritoService.items.length > 0" >
+                  <div class="card-header">
+                    <h5 class="card-text">Resumen del pedido</h5>
+                  </div>
+                  <div class="card-body p-0" >
+                    <div class="card-body py-0" style="max-height: 150px; overflow: scroll; overflow-x: hidden;">
+                      <div class="row mt-2 " style="font-size: small;"  *ngFor="let item of carritoService.items">
+                        <div class="col-8" >
+                          <div class="row" >
+                            <div class="col-3 px-2 d-flex justify-content-center align-items-center" style="height: 70px; width: 70px;">
+                              <img class="img-fluid" *ngIf="item.producto?.imagen" src="{{urlBackend}}/api/uploads/img/{{item.producto.imagen}}" >
+                              <img class="img-fluid" *ngIf="!item.producto?.imagen" src="{{urlBackend}}/images/not-image-cuadrado.png" >
+                            </div>
+                            <div class="col-9 px-2">
+                              <p class="mb-1">{{item.producto.nombre.toUpperCase()}}</p>
+                              <span class="text-muted" style="font-size: x-small; font-weight: 500;">{{item.producto.descripcion.toUpperCase()}}</span>
+                              <p class="text-left text-muted" style="font-weight: 500;">CANTIDAD: {{item.cantidad}}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-4 px-2  text-right">
+                        <span class="label " style="color: #737373;">{{item.cantidad*item.producto.precio | currency: 'S/' }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="dropdown-divider"></div>
+                    <div class="card-body py-0 row mt-2" style="font-weight: 500;">
+                      <div class="col-sm">
+                        <p class="mb-2">Subtotal:</p>
+                      </div>
+                      <div class="col-sm">
+                        <p class="mb-2" class="text-right">{{this.subtotal | currency: 'S/' }}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+
+
+  </section>
+
+
+</div>
+
+
