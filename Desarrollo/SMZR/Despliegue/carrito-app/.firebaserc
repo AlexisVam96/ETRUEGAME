@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "app-etruegame",
+    "app-etrue": "app-etruegame"
+  },
+  "targets": {}
+}
